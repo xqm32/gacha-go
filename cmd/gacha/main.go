@@ -12,7 +12,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "gacha",
 	Short:   "Genshin Impact Gacha Simulator",
-	Version: "0.1.2",
+	Version: "0.1.4",
 	Run: func(cmd *cobra.Command, args []string) {
 		times, errTimes := cmd.Flags().GetInt("times")
 		charsUp, errCharsUp := cmd.Flags().GetInt("chars-up")
