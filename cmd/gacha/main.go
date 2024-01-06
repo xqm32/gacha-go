@@ -31,7 +31,8 @@ var rootCmd = &cobra.Command{
 		if verbose {
 			g.OnCharUp = func(g *gacha.Gacha) { fmt.Printf("  UP CHAR %4d %4d\n", g.Pulls, g.U5cPity) }
 			g.OnCharDown = func(g *gacha.Gacha) { fmt.Printf("DOWN CHAR %4d %4d\n", g.Pulls, g.U5cPity) }
-			g.OnWeapUp = func(g *gacha.Gacha) { fmt.Printf("  UP WEAP %4d %4d\n", g.Pulls, g.U5wPity) }
+			g.OnWeapUp = func(g *gacha.Gacha) { fmt.Printf("  UP WEAP %4d %4d (CHOSEN)\n", g.Pulls, g.U5wPity) }
+			g.OnChosenWeapUp = func(g *gacha.Gacha) { fmt.Printf("  UP WEAP %4d %4d\n", g.Pulls, g.U5wPity) }
 			g.OnWeapDown = func(g *gacha.Gacha) { fmt.Printf("DOWN WEAP %4d %4d\n", g.Pulls, g.U5wPity) }
 		}
 
@@ -39,6 +40,9 @@ var rootCmd = &cobra.Command{
 		for i := 0; i < times; i++ {
 			t := *g
 			sum += t.PullUp(charsUp, weapsUp).Pulls
+			if verbose {
+				fmt.Println()
+			}
 		}
 		fmt.Printf("%.2f\n", float64(sum)/float64(times))
 	},

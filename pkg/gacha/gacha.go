@@ -36,12 +36,14 @@ type Gacha struct {
 	U4cPity int // Up 4 star character pity
 	U5wPity int // Up 5 star weapon pity
 	U5wGuar int // Up 5 star up weapon guarantees
+	U5wFate int // Up 5 star weapon destiny
 	U4wPity int // Up 4 star weapon pity
 	// events
-	OnCharUp   func(g *Gacha) // 5 star character up event
-	OnCharDown func(g *Gacha) // 5 star character down event
-	OnWeapUp   func(g *Gacha) // 5 star weapon up event
-	OnWeapDown func(g *Gacha) // 5 star weapon down event
+	OnCharUp       func(g *Gacha) // 5 star character up event
+	OnCharDown     func(g *Gacha) // 5 star character down event
+	OnChosenWeapUp func(g *Gacha) // 5 star chosen weapon up event
+	OnWeapUp       func(g *Gacha) // 5 star weapon up event
+	OnWeapDown     func(g *Gacha) // 5 star weapon down event
 }
 
 func (g *Gacha) PullChar() *Gacha {
@@ -72,16 +74,21 @@ func (g *Gacha) PullWeap() *Gacha {
 	if (rand.Intn(9999) + 1) <= U5W_W[g.U5wPity-1] {
 		n := rand.Intn(9999) + 1
 		switch {
-		case (g.U5wGuar == 0 && 1 <= n && n <= 3750) || (g.U5wGuar == 1 && 1 <= n && n <= 5000) || (g.U5wGuar == 2):
+		case (g.U5wGuar == 0 && 1 <= n && n <= 3750) || (g.U5wGuar == 1 && 1 <= n && n <= 5000) || (g.U5wFate == 2):
 			if g.OnWeapUp != nil {
 				g.OnWeapUp(g)
 			}
-			g.WeapsUp, g.U5wGuar = g.WeapsUp+1, 0
+			g.WeapsUp, g.U5wGuar, g.U5wFate = g.WeapsUp+1, 0, 0
+		case (g.U5wGuar == 0 && 3751 <= n && n <= 7500) || (g.U5wGuar == 1 && 5001 <= n && n <= 10000):
+			if g.OnChosenWeapUp != nil {
+				g.OnChosenWeapUp(g)
+			}
+			g.WeapsDown, g.U5wGuar, g.U5wFate = g.WeapsDown+1, 0, g.U5wFate+1
 		default:
 			if g.OnWeapDown != nil {
 				g.OnWeapDown(g)
 			}
-			g.WeapsDown, g.U5wGuar = g.WeapsDown+1, g.U5wGuar+1
+			g.WeapsDown, g.U5wGuar, g.U5wFate = g.WeapsDown+1, g.U5wGuar+1, g.U5wFate+1
 		}
 		g.Stars, g.U5wPity = g.Stars+5, 0
 	} else if g.U4wPity >= 10 || (rand.Intn(9999)+1) <= U4W_W[g.U4wPity-1] {
