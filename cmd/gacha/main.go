@@ -31,8 +31,8 @@ var rootCmd = &cobra.Command{
 		if verbose {
 			g.OnCharUp = func(g *gacha.Gacha) { fmt.Printf("  UP CHAR %4d %4d\n", g.Pulls, g.U5cPity) }
 			g.OnCharDown = func(g *gacha.Gacha) { fmt.Printf("DOWN CHAR %4d %4d\n", g.Pulls, g.U5cPity) }
-			g.OnWeapUp = func(g *gacha.Gacha) { fmt.Printf("  UP WEAP %4d %4d (CHOSEN)\n", g.Pulls, g.U5wPity) }
-			g.OnChosenWeapUp = func(g *gacha.Gacha) { fmt.Printf("  UP WEAP %4d %4d\n", g.Pulls, g.U5wPity) }
+			g.OnWeapUp = func(g *gacha.Gacha) { fmt.Printf("  UP WEAP %4d %4d\n", g.Pulls, g.U5wPity) }
+			g.OnAnotherWeapUp = func(g *gacha.Gacha) { fmt.Printf("ANOT WEAP %4d %4d\n", g.Pulls, g.U5wPity) }
 			g.OnWeapDown = func(g *gacha.Gacha) { fmt.Printf("DOWN WEAP %4d %4d\n", g.Pulls, g.U5wPity) }
 		}
 

@@ -24,8 +24,8 @@ var (
 
 type Gacha struct {
 	// records
-	Pulls     int // intertwined fates
-	Stars     int // starglitters
+	Pulls     int // Intertwined fates
+	Stars     int // Starglitters
 	CharsUp   int // 5 star characters up
 	CharsDown int // 5 star characters down
 	WeapsUp   int // 5 star weapons up
@@ -36,14 +36,14 @@ type Gacha struct {
 	U4cPity int // Up 4 star character pity
 	U5wPity int // Up 5 star weapon pity
 	U5wGuar int // Up 5 star up weapon guarantees
-	U5wFate int // Up 5 star weapon destiny
+	U5wFate int // Up 5 star weapon fate
 	U4wPity int // Up 4 star weapon pity
 	// events
-	OnCharUp       func(g *Gacha) // 5 star character up event
-	OnCharDown     func(g *Gacha) // 5 star character down event
-	OnChosenWeapUp func(g *Gacha) // 5 star chosen weapon up event
-	OnWeapUp       func(g *Gacha) // 5 star weapon up event
-	OnWeapDown     func(g *Gacha) // 5 star weapon down event
+	OnCharUp        func(g *Gacha) // 5 star character up event
+	OnCharDown      func(g *Gacha) // 5 star character down event
+	OnWeapUp        func(g *Gacha) // 5 star weapon up event
+	OnAnotherWeapUp func(g *Gacha) // Another 5 star weapon up event
+	OnWeapDown      func(g *Gacha) // 5 star weapon down event
 }
 
 func (g *Gacha) PullChar() *Gacha {
@@ -80,8 +80,8 @@ func (g *Gacha) PullWeap() *Gacha {
 			}
 			g.WeapsUp, g.U5wGuar, g.U5wFate = g.WeapsUp+1, 0, 0
 		case (g.U5wGuar == 0 && 3751 <= n && n <= 7500) || (g.U5wGuar == 1 && 5001 <= n && n <= 10000):
-			if g.OnChosenWeapUp != nil {
-				g.OnChosenWeapUp(g)
+			if g.OnAnotherWeapUp != nil {
+				g.OnAnotherWeapUp(g)
 			}
 			g.WeapsDown, g.U5wGuar, g.U5wFate = g.WeapsDown+1, 0, g.U5wFate+1
 		default:
