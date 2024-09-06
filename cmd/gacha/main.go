@@ -27,12 +27,12 @@ var rootCmd = &cobra.Command{
 		g.SetPity(charsPity, weapsPity)
 
 		if verbose {
-			g.OnCharUp = func(g *gacha.Gacha) { fmt.Printf("  UP CHAR %4d %4d\n", g.Pulls(), g.CharWish.Pity) }
-			g.OnChar = func(g *gacha.Gacha) { fmt.Printf("DOWN CHAR %4d %4d\n", g.Pulls(), g.CharWish.Pity) }
-			g.OnCharSpec = func(g *gacha.Gacha) { fmt.Printf("LIGH CHAR %4d %4d\n", g.Pulls(), g.CharWish.Pity) }
-			g.OnWeapUp = func(g *gacha.Gacha) { fmt.Printf("  UP WEAP %4d %4d\n", g.Pulls(), g.WeapWish.Pity) }
-			g.OnWeapSpec = func(g *gacha.Gacha) { fmt.Printf("ANOT WEAP %4d %4d\n", g.Pulls(), g.WeapWish.Pity) }
-			g.OnWeap = func(g *gacha.Gacha) { fmt.Printf("DOWN WEAP %4d %4d\n", g.Pulls(), g.WeapWish.Pity) }
+			g.OnCharUp = func(g *gacha.Gacha) { fmt.Printf("  UP CHAR %4d %4d\n", g.Pulls(), g.CharAt) }
+			g.OnChar = func(g *gacha.Gacha) { fmt.Printf("DOWN CHAR %4d %4d\n", g.Pulls(), g.CharAt) }
+			g.OnCharSpec = func(g *gacha.Gacha) { fmt.Printf("LIGH CHAR %4d %4d\n", g.Pulls(), g.CharAt) }
+			g.OnWeapUp = func(g *gacha.Gacha) { fmt.Printf("  UP WEAP %4d %4d\n", g.Pulls(), g.WeapAt) }
+			g.OnWeapSpec = func(g *gacha.Gacha) { fmt.Printf("ANOT WEAP %4d %4d\n", g.Pulls(), g.WeapAt) }
+			g.OnWeap = func(g *gacha.Gacha) { fmt.Printf("DOWN WEAP %4d %4d\n", g.Pulls(), g.WeapAt) }
 		}
 
 		pulls := make(chan int)
