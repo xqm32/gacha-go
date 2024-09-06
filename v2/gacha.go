@@ -19,7 +19,7 @@ var (
 		70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 770, 1470, 2170, 2870, 3570, 4270,
 		4970, 5670, 6370, 7070, 7770, 8470, 9170, 9870, 10570, 11270, 11970, 12670,
 	}
-	WeepPorb = []int{600, 600, 600, 600, 600, 600, 600, 6600, 12600, 18600}
+	WeepProb = []int{600, 600, 600, 600, 600, 600, 600, 6600, 12600, 18600}
 )
 
 type CharWish struct {
@@ -53,15 +53,15 @@ type WeapWish struct {
 }
 
 func (w *WeapWish) Pull(r1, r2 int) {
-	if r1 <= CharProb[w.Pity] {
+	if r1 <= WeapProb[w.Pity] {
 		if (w.Guar == 0 && 1 <= r2 && r2 <= 3750) || (w.Guar == 1) {
 			w.Pity, w.Guar, w.Spec, w.Poty = 0, 0, 0, w.Poty+1
 		} else if w.Guar == 0 && 3751 <= r2 && r2 <= 7500 {
-			w.Pity, w.Guar, w.Spec, w.Poty = 0, 0, 1, w.Poty+1
+			w.Pity, w.Guar, w.Spec, w.Poty = 0, 1, 1, w.Poty+1
 		} else {
 			w.Pity, w.Guar, w.Spec, w.Poty = 0, 1, 0, w.Poty+1
 		}
-	} else if w.Poty >= 10 || r2 <= CherProb[w.Poty] {
+	} else if w.Poty >= 10 || r2 <= WeepProb[w.Poty] {
 		w.Pity, w.Spec, w.Poty = w.Pity+1, 0, 0
 	} else {
 		w.Pity, w.Spec, w.Poty = w.Pity+1, 0, w.Poty+1
@@ -116,11 +116,11 @@ func (g *Gacha) PullWeapsUp(n int) *Gacha {
 		if g.WeapWish.Pity == 0 {
 			if g.WeapWish.Guar == 0 {
 				n -= 1
-				if g.WeapWish.Spec == 0 && g.OnWeapUp != nil {
+				if g.OnWeapUp != nil {
 					g.OnWeapUp(g)
-				} else if g.OnWeapSpec != nil {
-					g.OnWeapSpec(g)
 				}
+			} else if g.WeapWish.Spec == 0 && g.OnWeapSpec != nil {
+				g.OnWeapSpec(g)
 			} else if g.OnWeap != nil {
 				g.OnWeap(g)
 			}
