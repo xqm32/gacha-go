@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/xqm32/gacha-go"
+	"github.com/xqm32/gacha-go/v2"
 )
 
 var rootCmd = &cobra.Command{
@@ -23,24 +23,23 @@ var rootCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		g := &gacha.Gacha{
-			U5cPity: charsPity,
-			U5wPity: weapsPity,
-		}
+		g := &gacha.Gacha{}
+		g.SetPity(charsPity, weapsPity)
+
 		if verbose {
-			g.OnCharUp = func(g *gacha.Gacha) { fmt.Printf("  UP CHAR %4d %4d\n", g.Pulls, g.U5cPity) }
-			g.OnCharDown = func(g *gacha.Gacha) { fmt.Printf("DOWN CHAR %4d %4d\n", g.Pulls, g.U5cPity) }
-			g.OnCharLight = func(g *gacha.Gacha) { fmt.Printf("LIGH CHAR %4d %4d\n", g.Pulls, g.U5cPity) }
-			g.OnWeapUp = func(g *gacha.Gacha) { fmt.Printf("  UP WEAP %4d %4d\n", g.Pulls, g.U5wPity) }
-			g.OnAnotherWeapUp = func(g *gacha.Gacha) { fmt.Printf("ANOT WEAP %4d %4d\n", g.Pulls, g.U5wPity) }
-			g.OnWeapDown = func(g *gacha.Gacha) { fmt.Printf("DOWN WEAP %4d %4d\n", g.Pulls, g.U5wPity) }
+			g.OnCharUp = func(g *gacha.Gacha) { fmt.Printf("  UP CHAR %4d %4d\n", g.Pulls(), g.CharWish.Pity) }
+			g.OnChar = func(g *gacha.Gacha) { fmt.Printf("DOWN CHAR %4d %4d\n", g.Pulls(), g.CharWish.Pity) }
+			g.OnCharSpec = func(g *gacha.Gacha) { fmt.Printf("LIGH CHAR %4d %4d\n", g.Pulls(), g.CharWish.Pity) }
+			g.OnWeapUp = func(g *gacha.Gacha) { fmt.Printf("  UP WEAP %4d %4d\n", g.Pulls(), g.WeapWish.Pity) }
+			g.OnWeapSpec = func(g *gacha.Gacha) { fmt.Printf("ANOT WEAP %4d %4d\n", g.Pulls(), g.WeapWish.Pity) }
+			g.OnWeap = func(g *gacha.Gacha) { fmt.Printf("DOWN WEAP %4d %4d\n", g.Pulls(), g.WeapWish.Pity) }
 		}
 
 		pulls := make(chan int)
 		for range times {
 			t := *g
 			go func() {
-				pulls <- t.PullUp(charsUp, weapsUp).Pulls
+				pulls <- t.PullUp(charsUp, weapsUp).Pulls()
 				if verbose {
 					fmt.Println()
 				}
@@ -52,7 +51,7 @@ var rootCmd = &cobra.Command{
 			sum += <-pulls
 		}
 
-		fmt.Printf("%.2f\n", float64(sum)/float64(times))
+		fmt.Printf("%f\n", float64(sum)/float64(times))
 	},
 }
 
