@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/xqm32/gacha-go/gacha"
+	"github.com/xqm32/gacha-go"
 )
 
 var rootCmd = &cobra.Command{
