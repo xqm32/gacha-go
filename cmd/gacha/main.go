@@ -30,9 +30,11 @@ var rootCmd = &cobra.Command{
 			g.OnCharUp = func(g *gacha.Gacha) { fmt.Printf("  UP CHAR %4d %4d\n", g.Pulls(), g.CharAt) }
 			g.OnChar = func(g *gacha.Gacha) { fmt.Printf("DOWN CHAR %4d %4d\n", g.Pulls(), g.CharAt) }
 			g.OnCharSpec = func(g *gacha.Gacha) { fmt.Printf("LIGH CHAR %4d %4d\n", g.Pulls(), g.CharAt) }
+			g.OnCher = func(g *gacha.Gacha) { fmt.Printf("     CHER %4d %4d\n", g.Pulls(), g.CherAt) }
 			g.OnWeapUp = func(g *gacha.Gacha) { fmt.Printf("  UP WEAP %4d %4d\n", g.Pulls(), g.WeapAt) }
 			g.OnWeapSpec = func(g *gacha.Gacha) { fmt.Printf("ANOT WEAP %4d %4d\n", g.Pulls(), g.WeapAt) }
 			g.OnWeap = func(g *gacha.Gacha) { fmt.Printf("DOWN WEAP %4d %4d\n", g.Pulls(), g.WeapAt) }
+			g.OnWeep = func(g *gacha.Gacha) { fmt.Printf("     WEEP %4d %4d\n", g.Pulls(), g.WeepAt) }
 		}
 
 		pulls := make(chan int)
